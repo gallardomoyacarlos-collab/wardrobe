@@ -1,0 +1,17 @@
+WARDROBE — versión móvil local (PWA)
+
+QUÉ CAMBIA
+- Diseño adaptable a móvil.
+- Preparada como PWA instalable (manifest + service worker).
+- Fotografías y prendas guardadas en IndexedDB del dispositivo/navegador.
+- Copia de seguridad descargable en JSON que incluye las fotografías.
+- Restauración de una copia desde ese archivo.
+- Campo de fotografía preparado para ofrecer cámara trasera en móviles compatibles.
+
+IMPORTANTE PARA IPHONE
+Para instalar una PWA en iPhone no basta con abrir index.html desde Archivos. La aplicación debe estar publicada en una dirección HTTPS. Después, abre esa dirección en Safari, pulsa Compartir y selecciona «Añadir a pantalla de inicio».
+
+ALMACENAMIENTO
+Los datos permanecen en el almacenamiento del navegador de ese dispositivo. No hay sincronización automática entre iPhone y ordenador. Usa «Copia de seguridad» para exportar tu armario y «Restaurar copia» para recuperarlo en otro dispositivo/navegador. Mantén varias copias en un lugar seguro.
+
+Esta versión no es una app nativa de App Store. La silueta sigue siendo esquemática y no es un probador virtual realista.

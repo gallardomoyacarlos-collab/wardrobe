@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WARDROBE">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>WARDROBE — Tu armario digital</title>
+<style>
+:root{--bg:#0b0b0c;--panel:#151517;--panel2:#1d1d20;--line:#2b2b30;--muted:#92929a;--text:#f4f4f5;--accent:#d7ff64;--danger:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:235px 1fr}
+.sidebar{border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:30px;background:#0e0e0f}
+.brand{font-size:25px;font-weight:950;letter-spacing:-1.5px}.brand span{color:var(--accent)}
+.brand small{display:block;font-size:9px;letter-spacing:3px;color:var(--muted);font-weight:700;margin-top:3px}
+.nav{display:grid;gap:7px}.nav button{background:transparent;color:#aaa;border:0;text-align:left;padding:13px 14px;border-radius:10px;font-weight:650}.nav button.active,.nav button:hover{background:var(--panel2);color:var(--text)}.nav button.active:before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin:0 11px 2px 0}
+.side-note{margin-top:auto;color:var(--muted);font-size:11px;line-height:1.6}
+main{padding:34px clamp(18px,4vw,56px);max-width:1500px;width:100%;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:2.5px;color:var(--accent);font-weight:800}.top h1{font-size:clamp(28px,4vw,42px);letter-spacing:-1.8px;margin:7px 0 0}.top p{color:var(--muted);margin:7px 0 0;font-size:13px}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:11px 15px;border-radius:9px;font-weight:700}.btn.primary{background:var(--accent);color:#111;border-color:var(--accent)}.btn:hover{filter:brightness(1.12)}.btn.small{padding:7px 10px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}.stat{background:var(--panel);border:1px solid var(--line);padding:17px 19px;border-radius:13px}.stat label{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}.stat strong{display:block;font-size:29px;margin-top:7px;letter-spacing:-1px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:28px 0 16px}.section-head h2{font-size:18px;margin:0;letter-spacing:-.4px}.tools{display:flex;gap:8px;flex-wrap:wrap}.field{background:#111113;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px 12px;min-width:0}.field:focus{outline:1px solid var(--accent);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:14px}.item{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}.photo{height:190px;background:#202024;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.photo img{width:100%;height:100%;object-fit:cover}.placeholder{font-size:40px;color:#555}.item-info{padding:12px}.item-info strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{color:var(--muted);font-size:11px;margin-top:5px}.item-actions{display:flex;gap:6px;margin-top:11px}.iconbtn{border:1px solid var(--line);background:#202024;color:#ddd;border-radius:7px;padding:6px 9px;font-size:12px}.iconbtn.fav{color:var(--accent)}
+.empty{border:1px dashed #414149;border-radius:14px;padding:45px 20px;text-align:center;color:var(--muted)}.empty b{display:block;color:var(--text);margin-bottom:7px}
+.hidden{display:none!important}.filters{display:flex;gap:8px;flex-wrap:wrap}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.builder{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px}.slotlist{display:grid;gap:10px}.slot{display:grid;grid-template-columns:100px 1fr auto;gap:12px;align-items:center;background:#111113;border:1px solid var(--line);padding:9px;border-radius:10px}.slot img{width:100px;height:95px;object-fit:cover;border-radius:7px;background:#222}.slot .meta{margin-top:4px}
+.preview{display:grid;grid-template-columns:1fr 1fr;gap:10px}.previewbox{background:#101012;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:290px}.previewbox h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:3px 0 12px}.collage{display:grid;grid-template-columns:1fr 1fr;gap:6px}.collage img{width:100%;height:112px;object-fit:cover;border-radius:6px;background:#242428}.silhouette{height:240px;display:flex;align-items:center;justify-content:center;position:relative}.person{width:95px;height:210px;position:relative;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 4px 10px #000)}
+.head{width:35px;height:35px;border-radius:50%;background:#777;margin-bottom:5px}.torso{width:80px;height:85px;background:#5b5b62;border-radius:22px 22px 10px 10px;position:relative}.legs{display:flex;gap:7px}.legs i{display:block;width:34px;height:78px;background:#45454b;border-radius:7px 7px 12px 12px}.arms{position:absolute;top:43px;left:-17px;width:129px;height:78px;border-left:13px solid #62626a;border-right:13px solid #62626a;border-radius:20px}
+.outfit-label{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
+.modal-back{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}.modal{width:min(520px,100%);background:#171719;border:1px solid #38383d;border-radius:15px;padding:22px;max-height:90vh;overflow:auto}.modal h2{margin:0 0 18px;font-size:21px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.formrow{display:grid;gap:6px}.formrow.full{grid-column:1/-1}.formrow label{font-size:11px;color:var(--muted);font-weight:700}.formrow input,.formrow select,.formrow textarea{width:100%}.formrow textarea{min-height:65px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#111;padding:11px 17px;border-radius:9px;font-size:13px;font-weight:800;z-index:20;box-shadow:0 8px 30px #0008}
+footer{color:#666;font-size:10px;margin-top:35px;line-height:1.6}
+@media(max-width:800px){.app{grid-template-columns:1fr}.sidebar{padding:14px 16px;border-right:0;border-bottom:1px solid var(--line);gap:13px}.brand small{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:10px 12px}.side-note{display:none}main{padding:22px 15px}.builder{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:13px}.stat strong{font-size:23px}.photo{height:160px}}
+@media(max-width:480px){.top{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:repeat(3,1fr)}.stat label{font-size:9px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.photo{height:150px}.preview{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.slot{grid-template-columns:75px 1fr auto}.slot img{width:75px;height:78px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">WARD<span>ROBE</span><small>YOUR DIGITAL CLOSET</small></div>
+  <nav class="nav">
+    <button class="active" data-page="wardrobe">Armario</button>
+    <button data-page="outfits">Outfits</button>
+    <button data-page="favorites">Favoritos</button>
+  </nav>
+  <div style="display:grid;gap:8px">
+    <button class="btn small" id="backupBtn">↓ Copia de seguridad</button>
+    <button class="btn small" id="restoreBtn">↑ Restaurar copia</button>
+    <input type="file" id="restoreFile" accept="application/json,.json" hidden>
+    <button class="btn small" id="installBtn" hidden>＋ Instalar aplicación</button>
+  </div>
+  <div class="side-note">TU ESTILO. TU ARMARIO.<br>Guardado local en tu dispositivo.</div>
+</aside>
+<main>
+  <section id="page-wardrobe">
+    <div class="top"><div><div class="eyebrow">TU ESPACIO PERSONAL</div><h1>Tu armario.</h1><p>Organiza tus prendas y descubre nuevas combinaciones.</p></div><button class="btn primary" id="addBtn">＋ Añadir prenda</button></div>
+    <div class="stats"><div class="stat"><label>Prendas</label><strong id="countStat">0</strong></div><div class="stat"><label>Outfits guardados</label><strong id="outfitStat">0</strong></div><div class="stat"><label>Favoritos</label><strong id="favStat">0</strong></div></div>
+    <div class="section-head"><h2>Tu colección</h2><div class="tools"><input class="field" id="search" placeholder="Buscar prenda…"><select class="field" id="filter"><option value="">Todas las categorías</option><option>Camisetas</option><option>Pantalones</option><option>Chaquetas</option><option>Calzado</option><option>Accesorios</option><option>Sudaderas</option><option>Otros</option></select></div></div>
+    <div id="wardrobeGrid" class="grid"></div>
+  </section>
+  <section id="page-favorites" class="hidden">
+    <div class="top"><div><div class="eyebrow">TUS IMPRESCINDIBLES</div><h1>Favoritos.</h1><p>Las prendas que más utilizas.</p></div></div>
+    <div id="favoritesGrid" class="grid"></div>
+  </section>
+  <section id="page-outfits" class="hidden">
+    <div class="top"><div><div class="eyebrow">CREA TU COMBINACIÓN</div><h1>Outfit studio.</h1><p>Combina prendas de tu armario y guarda tus conjuntos.</p></div><button class="btn primary" id="saveOutfit">Guardar outfit</button></div>
+    <div class="builder">
+      <div class="panel"><div class="section-head" style="margin-top:0"><h2>Prendas seleccionadas</h2><button class="btn small" id="clearOutfit">Limpiar</button></div><div class="slotlist" id="slots"></div><div class="section-head"><h2>Añadir al conjunto</h2></div><div class="tools"><select class="field" id="pickItem" style="flex:1"><option value="">Selecciona una prenda…</option></select><button class="btn" id="addToOutfit">Añadir</button></div><div class="formrow" style="margin-top:12px"><label>Nombre del conjunto</label><input class="field" id="outfitName" placeholder="Ej. Casual de diario"></div></div>
+      <div class="panel"><div class="section-head" style="margin-top:0"><h2>Vista previa</h2></div><div class="preview"><div class="previewbox"><h3>Collage real</h3><div class="collage" id="collage"></div><div class="outfit-label">Tus prendas seleccionadas</div></div><div class="previewbox"><h3>Silueta orientativa</h3><div class="silhouette"><div class="person"><div class="head"></div><div class="arms"></div><div class="torso"></div><div class="legs"><i></i><i></i></div></div></div><div class="outfit-label">Representación esquemática, no prueba virtual</div></div></div></div>
+    </div>
+    <div class="section-head"><h2>Conjuntos guardados</h2></div><div id="savedOutfits" class="grid"></div>
+  </section>
+  <footer>WARDROBE · Guardado local en este dispositivo. Haz copias de seguridad desde el menú antes de cambiar de móvil o borrar los datos del navegador. La instalación en iPhone requiere abrir la versión publicada mediante un enlace HTTPS.</footer>
+</main>
+</div>
+<div id="modalRoot"></div><div id="toastRoot"></div>
+<script>
+const DB_NAME='wardrobe-local-v1', STORE='items', OUTFITS='outfits';
+let db, items=[], outfits=[], selected=[], editingId=null;
+const $=id=>document.getElementById(id);
+function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE,{keyPath:'id'});if(!d.objectStoreNames.contains(OUTFITS))d.createObjectStore(OUTFITS,{keyPath:'id'});};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+function all(store){return new Promise((resolve,reject)=>{const r=db.transaction(store).objectStore(store).getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+function put(store,obj){return new Promise((resolve,reject)=>{const r=db.transaction(store,'readwrite').objectStore(store).put(obj);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+function del(store,id){return new Promise((resolve,reject)=>{const r=db.transaction(store,'readwrite').objectStore(store).delete(id);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+function uid(){return crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random());}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(s){$('toastRoot').innerHTML=`<div class="toast">${esc(s)}</div>`;setTimeout(()=>$('toastRoot').innerHTML='',2200);}
+function imgSrc(item){return item.photo||''}
+function card(item){return `<article class="item"><div class="photo">${item.photo?`<img src="${item.photo}" alt="${esc(item.name)}">`:'<div class="placeholder">＋</div>'}</div><div class="item-info"><strong>${esc(item.name)}</strong><div class="meta">${esc(item.category)} · ${esc(item.color||'Sin color')}</div><div class="item-actions"><button class="iconbtn ${item.favorite?'fav':''}" data-fav="${item.id}">${item.favorite?'★':'☆'}</button><button class="iconbtn" data-edit="${item.id}">Editar</button><button class="iconbtn" data-del="${item.id}">Eliminar</button></div></div></article>`;}
+function renderGrid(){const q=$('search').value.toLowerCase(),cat=$('filter').value;const filtered=items.filter(x=>(!q||(x.name+' '+x.brand+' '+x.color).toLowerCase().includes(q))&&(!cat||x.category===cat));$('wardrobeGrid').innerHTML=filtered.length?filtered.map(card).join(''):`<div class="empty" style="grid-column:1/-1"><b>${items.length?'No hay resultados':'Tu armario está vacío'}</b>${items.length?'Prueba con otro filtro.':'Añade tu primera prenda para empezar a construir tu colección.'}</div>`;$('favoritesGrid').innerHTML=items.filter(x=>x.favorite).map(card).join('')||'<div class="empty" style="grid-column:1/-1"><b>Aún no tienes favoritos</b>Marca una prenda con ☆ para guardarla aquí.</div>';$('countStat').textContent=items.length;$('outfitStat').textContent=outfits.length;$('favStat').textContent=items.filter(x=>x.favorite).length;renderPicker();}
+function renderPicker(){$('pickItem').innerHTML='<option value="">Selecciona una prenda…</option>'+items.map(x=>`<option value="${x.id}">${esc(x.name)} · ${esc(x.category)}</option>`).join('');}
+function modal(item){editingId=item?.id||null;const x=item||{name:'',category:'Camisetas',color:'',brand:'',season:'Todo el año',fit:'Regular',notes:'',photo:''};$('modalRoot').innerHTML=`<div class="modal-back" id="backdrop"><div class="modal"><h2>${item?'Editar prenda':'Añadir prenda'}</h2><form id="itemForm"><div class="formgrid"><div class="formrow full"><label>Fotografía</label><input class="field" type="file" id="photo" accept="image/*" capture="environment" ${item?'':'required'}><small class="meta">Puedes elegir una foto de tu dispositivo. Se guardará en este navegador.</small></div><div class="formrow full"><label>Nombre</label><input class="field" name="name" required maxlength="60" value="${esc(x.name)}" placeholder="Ej. Camiseta blanca básica"></div><div class="formrow"><label>Categoría</label><select class="field" name="category">${['Camisetas','Pantalones','Chaquetas','Calzado','Accesorios','Sudaderas','Otros'].map(v=>`<option ${x.category===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="formrow"><label>Color</label><input class="field" name="color" value="${esc(x.color)}" placeholder="Negro"></div><div class="formrow"><label>Marca</label><input class="field" name="brand" value="${esc(x.brand)}" placeholder="Marca"></div><div class="formrow"><label>Temporada</label><select class="field" name="season">${['Todo el año','Primavera','Verano','Otoño','Invierno'].map(v=>`<option ${x.season===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="formrow"><label>Ajuste</label><select class="field" name="fit">${['Regular','Oversize','Slim','Wide leg','Relaxed','Otro'].map(v=>`<option ${x.fit===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="formrow full"><label>Observaciones</label><textarea class="field" name="notes">${esc(x.notes)}</textarea></div></div><div class="modal-actions"><button type="button" class="btn" id="cancelModal">Cancelar</button><button class="btn primary" type="submit">Guardar prenda</button></div></form></div></div>`;$('cancelModal').onclick=closeModal;$('backdrop').onclick=e=>{if(e.target.id==='backdrop')closeModal();};$('itemForm').onsubmit=saveItem;}
+function closeModal(){$('modalRoot').innerHTML='';editingId=null;}
+async function saveItem(e){e.preventDefault();const f=e.target,old=items.find(x=>x.id===editingId);let photo=old?.photo||'';const file=$('photo').files[0];if(file){if(file.size>8*1024*1024){toast('La imagen supera 8 MB. Elige una más pequeña.');return;}photo=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file);});}if(!photo){toast('Añade una fotografía.');return;}const data=Object.fromEntries(new FormData(f));const obj={...old,...data,id:editingId||uid(),photo,favorite:old?.favorite||false,created:old?.created||Date.now()};await put(STORE,obj);items=await all(STORE);closeModal();renderGrid();toast('Prenda guardada');}
+async function actionClick(e){const t=e.target.closest('button');if(!t)return;if(t.dataset.fav){const x=items.find(x=>x.id===t.dataset.fav);x.favorite=!x.favorite;await put(STORE,x);items=await all(STORE);renderGrid();}if(t.dataset.edit)modal(items.find(x=>x.id===t.dataset.edit));if(t.dataset.del){if(confirm('¿Eliminar esta prenda?')){await del(STORE,t.dataset.del);items=await all(STORE);selected=selected.filter(id=>id!==t.dataset.del);renderGrid();renderOutfit();toast('Prenda eliminada');}}}
+function renderOutfit(){const chosen=selected.map(id=>items.find(x=>x.id===id)).filter(Boolean);$('slots').innerHTML=chosen.length?chosen.map(x=>`<div class="slot"><img src="${x.photo}" alt=""><div><strong>${esc(x.name)}</strong><div class="meta">${esc(x.category)} · ${esc(x.color)}</div></div><button class="iconbtn" data-remove="${x.id}">Quitar</button></div>`).join(''):'<div class="empty"><b>Empieza tu conjunto</b>Añade prendas desde tu inventario.</div>';$('collage').innerHTML=chosen.length?chosen.map(x=>`<img src="${x.photo}" alt="${esc(x.name)}">`).join(''):'<div class="meta" style="grid-column:1/-1;text-align:center;padding:40px 0">Tu collage aparecerá aquí</div>';$('savedOutfits').innerHTML=outfits.length?outfits.map(o=>`<article class="item"><div class="photo" style="height:150px"><div class="collage" style="width:100%;padding:5px">${o.ids.map(id=>items.find(x=>x.id===id)).filter(Boolean).slice(0,4).map(x=>`<img src="${x.photo}" style="height:68px">`).join('')}</div></div><div class="item-info"><strong>${esc(o.name)}</strong><div class="meta">${o.ids.length} prendas</div><div class="item-actions"><button class="iconbtn" data-load="${o.id}">Cargar</button><button class="iconbtn" data-outdel="${o.id}">Eliminar</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1"><b>Aún no has guardado outfits</b>Cuando termines una combinación, guárdala.</div>';}
+$('slots').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(b){selected=selected.filter(id=>id!==b.dataset.remove);renderOutfit();}});
+$('savedOutfits').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.load){const o=outfits.find(x=>x.id===b.dataset.load);selected=o.ids.filter(id=>items.some(x=>x.id===id));$('outfitName').value=o.name;renderOutfit();}if(b.dataset.outdel&&confirm('¿Eliminar este outfit?')){await del(OUTFITS,b.dataset.outdel);outfits=await all(OUTFITS);renderOutfit();renderGrid();}});
+$('addToOutfit').onclick=()=>{const id=$('pickItem').value;if(!id)return toast('Selecciona una prenda');if(!selected.includes(id))selected.push(id);renderOutfit();};
+$('clearOutfit').onclick=()=>{selected=[];$('outfitName').value='';renderOutfit();};
+$('saveOutfit').onclick=async()=>{if(!selected.length)return toast('Añade alguna prenda primero');const name=$('outfitName').value.trim()||'Outfit sin nombre';const obj={id:uid(),name,ids:[...selected],created:Date.now()};await put(OUTFITS,obj);outfits=await all(OUTFITS);renderOutfit();renderGrid();toast('Outfit guardado');};
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['wardrobe','outfits','favorites'].forEach(p=>$('page-'+p).classList.toggle('hidden',p!==b.dataset.page));});
+$('addBtn').onclick=()=>modal();$('wardrobeGrid').addEventListener('click',actionClick);$('favoritesGrid').addEventListener('click',actionClick);$('search').oninput=renderGrid;$('filter').onchange=renderGrid;
+// Copia de seguridad completa: incluye los datos y las fotografías guardadas localmente.
+$('backupBtn').onclick=()=>{const payload={app:'WARDROBE',version:1,createdAt:new Date().toISOString(),items,outfits};const blob=new Blob([JSON.stringify(payload)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='WARDROBE-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);toast('Copia de seguridad descargada');};
+$('restoreBtn').onclick=()=>$('restoreFile').click();
+$('restoreFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='WARDROBE'||!Array.isArray(data.items)||!Array.isArray(data.outfits))throw new Error('Formato no válido');if(!confirm('Restaurar esta copia sustituirá el inventario y los outfits actuales. ¿Continuar?'))return;for(const x of await all(STORE))await del(STORE,x.id);for(const x of await all(OUTFITS))await del(OUTFITS,x.id);for(const x of data.items)await put(STORE,x);for(const x of data.outfits)await put(OUTFITS,x);items=await all(STORE);outfits=await all(OUTFITS);selected=[];renderGrid();renderOutfit();toast('Copia restaurada correctamente');}catch(err){alert('No se pudo restaurar la copia. Comprueba que sea un archivo de WARDROBE válido.');}finally{e.target.value='';}};
+let installPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installBtn').hidden=false;});$('installBtn').onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('installBtn').hidden=true;};
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('PWA offline no disponible',err)));}
+(async()=>{try{db=await openDB();items=await all(STORE);outfits=await all(OUTFITS);renderGrid();renderOutfit();}catch(e){console.error(e);alert('No se pudo iniciar el almacenamiento del navegador. Prueba con Safari, Chrome o Edge actualizado.');}})();
+</script>
+</body></html>
